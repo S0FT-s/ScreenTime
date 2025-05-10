@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>screen time</title>
+    <style>
+        body {
+            font-family: sans-serif; margin: 40px; text-align: center; 
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ffffff;
+        }
+
+        #grafico {
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 16px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        #stats {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 20px auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        select {
+            background-color: #2a2a2a;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 0 auto 20px;
+            display: block;
+            font-size: 16px;
+        }
+
+        canvas {
+            display: block;
+            margin: auto;
+            max-width: 800px;
+        }
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <h1>Dashboard screen time</h1>
+
+    <label for="mes">Selecione o mês:</label>
+    <select id="mes" onchange="LoadData()">
+        <option value="1">January</option>
+        <option value="2">February</option>
+        <option value="3">March</option>
+        <option value="4">April</option>
+        <option value="5">May</option>
+        <option value="6">June</option>
+        <option value="7">July</option>
+        <option value="8">August</option>
+        <option value="9">September</option>
+        <option value="10">October</option>
+        <option value="11">November</option>
+        <option value="12">December</option>
+    </select>
+
+    <canvas id="grafico" height="600", width="1500"></canvas>
+
+    <div id="stats" style="margin-top: 20px; font-family: Arial; font-size: 16px;">
+        <p><strong>Dia com mais uso:</strong> <span id="DaymoreUse"></span></p>
+        <p><strong>Dia com menos uso:</strong> <span id="DayLessUse"></span></p>
+        <p><strong>Total do mês:</strong> <span id="MonthTotal"></span> min</p>
+        <p><strong>Média por dia:</strong> <span id="DayAverage"></span> min</p>
+    </div>
+    <script>
+        let grafico;
+
+
+        function MinToHour(Tmin){
+            let Time_Hours = Tmin/60
+            let Time_Min = Tmin%60
+            var ReturnValue = Math.floor(Time_Hours) + "h and " + Time_Min
+            return ReturnValue
+        }
+
+        function CreateChart(labels, dados) {
+            const ctx = document.getElementById('grafico').getContext('2d');
+
+            if (grafico) {
+                grafico.destroy();
+            }
+
+            grafico = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Screen time',
+                        data: dados,
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#ffffff'
+                            },
+                            grid: {
+                                color: '#333333'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#ffffff'
+                            },
+                            grid: {
+                                color: '#333333'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function LoadData() {
+            const mes = document.getElementById('mes').value;
+
+            fetch(`/dados?mes=${mes}`)
+                .then(response => response.json())
+                .then(data => {
+                    const labels = data.map(item => `Dia ${item.dia}`);
+                    const val = data.map(item => item.tempo);
+                    CreateChart(labels, val);
+
+                    if (data.length > 0) {
+                        const max = Math.max(...val);
+                        const min = Math.min(...val);
+                        const total = val.reduce((a, b) => a + b, 0);
+                        const Average = Math.round(total / val.length);
+
+                        const DayMoreUse = data.find(item => item.tempo === max).dia;
+                        const DayLessUse = data.find(item => item.tempo === min).dia;
+
+                        document.getElementById('DaymoreUse').textContent = `Day ${DayMoreUse} (${MinToHour(max)} min)`;
+                        document.getElementById('DayLessUse').textContent = `Day ${DayLessUse} (${MinToHour(min)} min)`;
+                        document.getElementById('MonthTotal').textContent = MinToHour(total);
+                        document.getElementById('DayAverage').textContent = MinToHour(Average);
+                        
+                    }
+                });
+        }
+
+        // Carregar ao iniciar
+        window.onload = LoadData;
+    </script>
+
+</body>
+</html>
