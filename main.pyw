@@ -58,7 +58,7 @@ def DataBaseWE(mode, month, day, min):
         print("min atual na db",valor)
         con.close()
 
-#função que roda apenas quando o computador liga
+#This function just run once one the starup
 def StartUp():
     day = localtime().tm_mday
     month = localtime().tm_mon
@@ -73,18 +73,17 @@ def main():
     #only runs one time and creates a row
     day, month = StartUp()
 
-   #var de teste
     minys = 0
-    #Este loop infinito regista a cada 2min na databse o tempo que passou
+#with this loop is add 2 more minus to the screen time of that day
     try:
-        print("loop a iniciar")
+        print("Starting loop")
         while True:
             sleep(120)
             DataBaseWE("u",month,day,2)
             minys += 2
             print(minys)
     except KeyboardInterrupt:
-        print("user bazou")
+        print("user leave")
         print(minys)
     
 main()
