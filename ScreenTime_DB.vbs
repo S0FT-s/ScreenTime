@@ -1,2 +1,0 @@
-Set WshShell = CreateObject("WScript.Shell")
-WshShell.Run """C:\Users\Soft\AppData\Local\Programs\Python\Python313\python.exe"" ""C:\Users\Soft\Documents\Codes\Projects\Screen_Time\site\backend\server.pyw""", 0
