@@ -84,7 +84,7 @@
     <canvas id="graph" height="600", width="1500"></canvas>
 
     <div id="stats" style="margin-top: 20px; font-family: Arial; font-size: 16px;">
-        <p><strong>Current day:</strong> <span id="currentDay"></span></p>
+        <p><strong>Current day:</strong> <span id="currentDay"></span>min</p>
         <p><strong>Day with Highest Usage:</strong> <span id="DaymoreUse"></span></p>
         <p><strong>Day with Lowest Usage:</strong> <span id="DayLessUse"></span></p>
         <p><strong>Monthly Total:</strong> <span id="MonthTotal"></span> min</p>
@@ -178,7 +178,7 @@
                         console.log(currentDay)
 
 
-                        document.getElementById('currentDay').textContent = MinToHour(currentDay)
+                        document.getElementById('currentDay').textContent = MinToHour(currentDay);
                         document.getElementById('DaymoreUse').textContent = `Day ${DayMoreUse} (${MinToHour(max)} min)`;
                         document.getElementById('DayLessUse').textContent = `Day ${DayLessUse} (${MinToHour(min)} min)`;
                         document.getElementById('MonthTotal').textContent = MinToHour(total);
