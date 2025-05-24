@@ -3,6 +3,9 @@ import sqlite3
 import os.path
 
 
+#A fazer meter o program para atualizar a meia noite
+
+
 base_dir = os.path.dirname(__file__)
 pathDB = os.path.join(base_dir, "DataBase","TimeStorage.db")
 
@@ -58,6 +61,18 @@ def DataBaseWE(mode, month, day, min):
         print("min atual na db",valor)
         con.close()
 
+# Deletes database records from 4 or more months ago
+def deleteOldRecords():
+    # Number of months to go back for deletion
+    DeletingValue = 4
+    month = (localtime().tm_mon - DeletingValue - 1) % 12 + 1#
+    con = sqlite3.connect(pathDB)
+    cur = con.cursor()
+    cur.execute("DELETE FROM time WHERE month = ?", (month,))
+    con.commit()
+    con.close()
+
+
 #This function just run once one the starup
 def StartUp():
     day = localtime().tm_mday
@@ -66,6 +81,7 @@ def StartUp():
     return day ,month
 
 def main():
+    deleteOldRecords()
     if os.path.isfile(pathDB) == False:
         DataBaseCreation()
     else:
@@ -85,5 +101,5 @@ def main():
     except KeyboardInterrupt:
         print("user leave")
         print(minys)
-    
+
 main()
