@@ -94,7 +94,9 @@ def main():
     try:
         print("Starting loop")
         while True:
-            sleep(120)
+            if day != localtime().tm_mday:
+                day, month = StartUp()
+            sleep(60)
             DataBaseWE("u",month,day,2)
             minys += 2
             print(minys)
