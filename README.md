@@ -24,4 +24,4 @@ And its done
 Ensure that main.pyw and server.pyw runs automatically when the computer boots up.
 
 ## 📷 Showcase 
-![DashBoard](Images/Image1.png)
+![DashBoard](Images/siteImage1.png)
