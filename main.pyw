@@ -5,7 +5,6 @@ import os.path
 
 #A fazer meter o program para atualizar a meia noite
 
-
 base_dir = os.path.dirname(__file__)
 pathDB = os.path.join(base_dir, "DataBase","TimeStorage.db")
 
@@ -81,11 +80,14 @@ def StartUp():
     return day ,month
 
 def main():
-    deleteOldRecords()
-    if os.path.isfile(pathDB) == False:
+# Checks if the folder and database exist; if not, creates them.
+    if os.path.isdir(pathDB) == False:
+        os.mkdir("DataBase")
         DataBaseCreation()
     else:
         print("[*] Database already created")
+        deleteOldRecords()
+
     #only runs one time and creates a row
     day, month = StartUp()
 
