@@ -82,7 +82,7 @@ def StartUp():
 def main():
 # Checks if the folder and database exist; if not, creates them.
     if os.path.isdir(pathDB) == False:
-        os.mkdir("DataBase")
+        os.mkdir(base_dir+"/DataBase")
         DataBaseCreation()
     else:
         print("[*] Database already created")
