@@ -1,2 +1,0 @@
-usar o setup para criar o ficheiro .vbs este ficheiro vai rodar abrir o programa e este vai rodar no background
-depois é meter o programa na pasta start up do windows
