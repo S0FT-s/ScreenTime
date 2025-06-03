@@ -97,8 +97,8 @@ def main():
         print("Starting loop")
         while True:
             sleep(60)
-            DataBaseWE("u",month,day,2)
-            minys += 2
+            DataBaseWE("u",month,day,1)
+            minys += 1
             if day != localtime().tm_mday:
                 day, month = StartUp()
     except KeyboardInterrupt:
