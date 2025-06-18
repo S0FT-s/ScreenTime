@@ -2,7 +2,6 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
     <title>screen time</title>
     <style>
         body {
@@ -97,14 +96,18 @@
         const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
         const currentMonth = month[now.getMonth()];
         document.getElementById(currentMonth).selected = "true";
-
+        
         function MinToHour(Tmin){
             let Time_Hours = Tmin/60
             let Time_Min = Tmin%60
-            var ReturnValue = Math.floor(Time_Hours) + "h and " + Time_Min
-            return ReturnValue
+            if (Math.floor(Time_Hours) == 0){
+                return Time_Min
+            }else{
+                var ReturnValue = Math.floor(Time_Hours) + "h and " + Time_Min
+                return ReturnValue
+            }
         }
-
+            
         function CreateChart(labels, dados) {
             const ctx = document.getElementById('graph').getContext('2d');
 
@@ -149,10 +152,19 @@
                             labels: {
                                 color: '#ffffff'
                             }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            callbacks: {
+                                label: function(context) {
+                                    const min = context.raw;
+                                    return MinToHour(min) + " min";
+                                }
+                            }
                         }
                     }
                 }
-            });
+            })
         }
 
         function LoadData() {
@@ -163,6 +175,7 @@
                 .then(data => {
                     const labels = data.map(item => `Dia ${item.dia}`);
                     const val = data.map(item => item.tempo);
+                    
                     CreateChart(labels, val);
 
                     if (data.length > 0) {
@@ -177,7 +190,6 @@
 
                         console.log(currentDay)
 
-
                         document.getElementById('currentDay').textContent = MinToHour(currentDay);
                         document.getElementById('DaymoreUse').textContent = `Day ${DayMoreUse} (${MinToHour(max)} min)`;
                         document.getElementById('DayLessUse').textContent = `Day ${DayLessUse} (${MinToHour(min)} min)`;
@@ -186,6 +198,7 @@
                         
                     }
                 });
+            
         }
 
         // Carregar ao iniciar
