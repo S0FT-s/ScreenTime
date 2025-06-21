@@ -3,63 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>screen time</title>
-    <style>
-        body {
-            font-family: sans-serif; margin: 40px; text-align: center; 
-            background-color: #121212;
-            color: #e0e0e0;
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #ffffff;
-        }
-
-        #graph {
-            background-color: #1e1e1e;
-            padding: 20px;
-            border-radius: 16px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        #stats {
-            background-color: #1e1e1e;
-            border-radius: 12px;
-            padding: 20px;
-            max-width: 1000px;
-            margin: 20px auto;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-
-        p {
-            margin: 10px 0;
-        }
-
-        select {
-            background-color: #2a2a2a;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            margin: 0 auto 20px;
-            display: block;
-            font-size: 16px;
-        }
-
-        canvas {
-            display: block;
-            margin: auto;
-            max-width: 800px;
-        }
-
-    </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -80,9 +26,7 @@
         <option id="November" value="11">November</option>
         <option id="December" value="12">December</option>
     </select>
-
     <canvas id="graph" height="600", width="1500"></canvas>
-
     <div id="stats" style="margin-top: 20px; font-family: Arial; font-size: 16px;">
         <p><strong>Current day:</strong> <span id="currentDay"></span>min</p>
         <p><strong>Day with Highest Usage:</strong> <span id="DaymoreUse"></span></p>
