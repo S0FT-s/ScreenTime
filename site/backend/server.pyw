@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify,send_from_directory
 import sqlite3 
 import threading
 import os
@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 #path to the Index.html and DB
 base_dir = os.path.dirname(__file__)
+frontendPath = os.path.join(base_dir, "..", "frontend")
 path = os.path.join(base_dir, "..", "frontend", "index.html")
 pathDB = os.path.join(base_dir, "..","..","DataBase","TimeStorage.db")
 
@@ -24,6 +25,14 @@ def Dbconn(mes):
 @app.route("/")
 def hello_world():
     return  html_content
+
+@app.route("/script.js")
+def serve_script():
+    return send_from_directory(frontendPath, "script.js")
+
+@app.route("/style.css")
+def serve_style():
+    return send_from_directory(frontendPath, "style.css")
 
 @app.route("/dados")
 def dados():
