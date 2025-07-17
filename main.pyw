@@ -74,19 +74,31 @@ def deleteOldRecords():
 
 #This function just run once one the starup
 def StartUp():
-    day = localtime().tm_mday
+    con = sqlite3.connect(pathDB)
+    cur = con.cursor()
+    current_day = localtime().tm_mday
     month = localtime().tm_mon
-    DataBaseWE("w",month,day,0)
-    return day ,month
+    last_day = cur.execute("SELECT MAX(day) FROM time WHERE month = ?",(month,))
+    last_day = last_day.fetchone()
+    con.close()
+    if last_day[0] != current_day-1:
+        missing_days = current_day - last_day[0]
+        for i in range(missing_days):
+            day_to_create = current_day - i
+            DataBaseWE("w",month,day_to_create,0)    
+    else:
+        DataBaseWE("w",month,current_day,0)
+    return current_day ,month
 
 def main():
 # Checks if the folder and database exist; if not, creates them.
     if os.path.isdir(pathDB) == False:
-        os.mkdir(base_dir+"/DataBase")
-        DataBaseCreation()
-    else:
-        print("[*] Database already created")
-        deleteOldRecords()
+        try:  
+            os.mkdir(base_dir+"/DataBase")
+            DataBaseCreation()
+        except:
+            print("[*] Database already created")
+            deleteOldRecords()
 
     #only runs one time and creates a row
     day, month = StartUp()
